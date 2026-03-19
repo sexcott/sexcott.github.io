@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<article>
+  <header class="page-header">
+    <div class="page-meta">
+      <span>{{ page.issuer }}</span>
+      {% if page.date %}<span>{{ page.date | date: "%Y-%m-%d" }}</span>{% endif %}
+      <span class="cert-status {{ page.status }}">{{ page.status }}</span>
+    </div>
+    <h1 class="page-title">{{ page.title }}</h1>
+  </header>
+
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>
