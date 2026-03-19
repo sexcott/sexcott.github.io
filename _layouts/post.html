@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<article>
+  <header class="page-header">
+    <div class="page-meta">
+      <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+      {% if page.category %}<span>{{ page.category }}</span>{% endif %}
+    </div>
+    <h1 class="page-title">{{ page.title }}</h1>
+  </header>
+
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>

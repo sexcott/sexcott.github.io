@@ -1,0 +1,35 @@
+title: sexcott
+description: Security researcher. CTF player. Documenting the journey.
+url: "https://sexcott.github.io"
+baseurl: ""
+
+author:
+  name: sexcott
+  github: sexcott
+  twitter: ""
+  email: ""
+
+collections:
+  writeups:
+    output: true
+    permalink: /writeups/:name/
+  certifications:
+    output: true
+    permalink: /certs/:name/
+
+permalink: /blog/:year/:month/:day/:title/
+
+defaults:
+  - scope: { path: "", type: "writeups" }
+    values: { layout: "writeup" }
+  - scope: { path: "", type: "certifications" }
+    values: { layout: "cert" }
+  - scope: { path: "", type: "posts" }
+    values: { layout: "post" }
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+markdown: kramdown
+highlighter: rouge
