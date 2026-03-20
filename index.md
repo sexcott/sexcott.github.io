@@ -25,7 +25,7 @@ title: Home
     </div>
     <div class="hero-actions">
       <a class="btn btn-primary" id="btn-random" href="#">random.choice(posts)</a>
-      <a class="btn btn-secondary" href="https://github.com/{{ site.author.github }}" target="_blank">GitHub</a>
+      <a class="btn btn-secondary" href="https://www.linkedin.com/in/angel-figueroa-scott-0723b524b/" target="_blank">LinkedIn</a>
     </div>
     <script>
       (function(){
