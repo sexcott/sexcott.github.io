@@ -5,7 +5,7 @@ permalink: /blog/
 ---
 <div class="section-wrap">
   <div class="section-head">
-    <span class="section-num">03</span>
+    <span class="section-num">01</span>
     <span class="section-title">Blog</span>
   </div>
   <div class="blog-grid">

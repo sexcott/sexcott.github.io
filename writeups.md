@@ -6,7 +6,7 @@ permalink: /writeups/
 <div class="section-wrap">
   <div class="section-head">
     <span class="section-num">02</span>
-    <span class="section-title">CTF Writeups</span>
+    <span class="section-title">Writeups</span>
   </div>
   <table class="ctf-table">
     <thead>

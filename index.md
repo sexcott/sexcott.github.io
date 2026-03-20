@@ -7,68 +7,74 @@ title: Home
   <div class="hero-left">
     <p class="hero-label">
       <span class="hero-dot"></span>
-      Security Researcher
+      Offensive Security Specialist
     </p>
     <h1 class="hero-name">
       <div class="name-main">Hola, soy</div>
-      <div class="name-handle">sexcott.</div>
+      <div class="name-handle">Angel Scott.</div>
     </h1>
     <p class="hero-bio">
-      Apasionado por la seguridad ofensiva, CTFs y el aprendizaje continuo.
-      Aquí documento certificaciones, resolución de retos y reflexiones del camino.
+     Curioso por naturaleza, apasionado de la seguridad ofensiva y aprendiz constante.
+      Este sitio es, en su totalidad, un reflejo de mi amor por este campo.   
     </p>
     <div class="hero-chips">
-      <span class="chip active">Pentesting</span>
-      <span class="chip active">CTF Player</span>
-      <span class="chip">Red Team</span>
-      <span class="chip">Web Security</span>
-      <span class="chip">Reversing</span>
+    <span class="chip active">Pentester</span>
+    <span class="chip active">Web AppSec</span>
+    <span class="chip">Mobile</span>
+    <span class="chip">Red Team</span>
     </div>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="{{ '/writeups/' | relative_url }}">Ver writeups</a>
+      <a class="btn btn-primary" id="btn-random" href="#">random.choice(posts)</a>
       <a class="btn btn-secondary" href="https://github.com/{{ site.author.github }}" target="_blank">GitHub</a>
     </div>
+    <script>
+      (function(){
+        var urls = [
+          {% for post in site.posts %}"{{ post.url }}"{% unless forloop.last %},{% endunless %}{% endfor %},
+          {% for writeup in site.writeups %}"{{ writeup.url }}"{% unless forloop.last %},{% endunless %}{% endfor %}
+        ];
+        var btn = document.getElementById('btn-random');
+        btn.href = urls[Math.floor(Math.random() * urls.length)];
+      })();
+    </script>
   </div>
   <div class="hero-stats">
-    <div class="stat-item">
-      <div class="stat-n">{{ site.writeups | size }}</div>
-      <div class="stat-l">Writeups</div>
-    </div>
     <div class="stat-item">
       <div class="stat-n">{{ site.posts | size }}</div>
       <div class="stat-l">Posts</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-n">{{ site.certifications | size }}</div>
-      <div class="stat-l">Certs</div>
-    </div>
+    <!--<div class="stat-item">
+    <div class="stat-n">{{ site.writeups | size }}</div>
+      <div class="stat-l">Writeups</div>      
+    </div>-->
   </div>
 </section>
 
-<!-- CERTIFICACIONES -->
+
+<!-- BLOG -->
 <div class="section-wrap">
   <div class="section-head">
     <span class="section-num">01</span>
-    <span class="section-title">Certificaciones</span>
-    <a class="section-more" href="/certs/">Ver todas</a>
+    <span class="section-title">Blog</span>
+    <a class="section-more" href="/blog/">Ver todos</a>
   </div>
-  <div class="cert-grid">
-    {% for cert in site.certifications limit:3 %}
-    <div class="cert-card">
-      <div class="cert-status {{ cert.status }}">{{ cert.status_label }}</div>
-      <div class="cert-title">{{ cert.short }}</div>
-      <div class="cert-org">{{ cert.issuer }}</div>
-      <p class="cert-body">{{ cert.description }}</p>
-    </div>
+  <div class="blog-grid">
+    {% for post in site.posts limit:3 %}
+    <a class="post-card" href="{{ post.url }}">
+      <span class="post-date">{{ post.date | date: "%Y — %m — %d" }}</span>
+      <div class="post-title">{{ post.title }}</div>
+      <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+      <span class="post-read">Leer</span>
+    </a>
     {% endfor %}
   </div>
 </div>
 
-<!-- CTF WRITEUPS -->
-<div class="section-wrap">
+<!-- CTF  -->
+<!--<div class="section-wrap">
   <div class="section-head">
     <span class="section-num">02</span>
-    <span class="section-title">CTF Writeups</span>
+    <span class="section-title">Writeups</span>
     <a class="section-more" href="/writeups/">Ver todos</a>
   </div>
   <table class="ctf-table">
@@ -99,22 +105,4 @@ title: Home
     </tbody>
   </table>
 </div>
-
-<!-- BLOG -->
-<div class="section-wrap">
-  <div class="section-head">
-    <span class="section-num">03</span>
-    <span class="section-title">Blog</span>
-    <a class="section-more" href="/blog/">Ver todos</a>
-  </div>
-  <div class="blog-grid">
-    {% for post in site.posts limit:3 %}
-    <a class="post-card" href="{{ post.url }}">
-      <span class="post-date">{{ post.date | date: "%Y — %m — %d" }}</span>
-      <div class="post-title">{{ post.title }}</div>
-      <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
-      <span class="post-read">Leer</span>
-    </a>
-    {% endfor %}
-  </div>
-</div>
+-->
